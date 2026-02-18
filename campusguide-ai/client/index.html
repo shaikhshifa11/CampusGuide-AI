@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusGuide AI - Official Digital Assistant</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">🎓</span>
+                <span class="logo-text">CampusGuide AI</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-view="chat" onclick="switchView('chat')">
+                <span class="nav-icon">💬</span>
+                <span class="nav-text">Chat Assistant</span>
+            </a>
+            <a href="#" class="nav-item" data-view="knowledge" data-role="admin" onclick="switchView('knowledge')" title="Admin access required">
+                <span class="nav-icon">📚</span>
+                <span class="nav-text">Knowledge Base</span>
+                <span class="nav-badge">ADMIN</span>
+            </a>
+            <a href="#" class="nav-item" data-view="profile" onclick="switchView('profile')">
+                <span class="nav-icon">👤</span>
+                <span class="nav-text">My Profile</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                <span id="theme-icon-light">🌙</span>
+                <span id="theme-icon-dark" style="display: none;">☀️</span>
+            </button>
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span class="status-text">Online</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <h1 class="page-title">CampusGuide AI</h1>
+                <span class="page-subtitle">Official Digital Assistant</span>
+            </div>
+            <div class="header-right">
+                <div class="student-badge" id="studentBadge" onclick="switchView('profile')">
+                    <span class="badge-icon">👤</span>
+                    <div class="badge-info">
+                        <span class="badge-name" id="studentName">Guest User</span>
+                        <span class="badge-details" id="studentDetails">Click to set profile</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Chat View -->
+        <div class="view-container" id="chatView" style="display: flex;">
+            <div class="chat-workspace">
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Welcome Screen -->
+                    <div class="welcome-screen" id="welcomeScreen">
+                        <div class="welcome-content">
+                            <div class="welcome-icon">🎓</div>
+                            <h2>Welcome to CampusGuide AI</h2>
+                            <p>Your official digital assistant for Engineering College</p>
+                            
+                            <div class="welcome-features">
+                                <div class="feature-card" onclick="askPredefinedQuestion('What documents are required for admission?')" data-question="documents">
+                                    <span class="feature-icon">📄</span>
+                                    <h3>Document Guidance</h3>
+                                    <p>Get help with admission documents and requirements</p>
+                                    <div class="card-action">Ask now →</div>
+                                </div>
+                                <div class="feature-card" onclick="askPredefinedQuestion('Explain the complete fee structure and payment methods')" data-question="fees">
+                                    <span class="feature-icon">💰</span>
+                                    <h3>Fee Information</h3>
+                                    <p>Learn about fee structure and payment methods</p>
+                                    <div class="card-action">Ask now →</div>
+                                </div>
+                                <div class="feature-card" onclick="askPredefinedQuestion('Tell me about hostel facilities and allocation process')" data-question="hostel">
+                                    <span class="feature-icon">🏠</span>
+                                    <h3>Hostel Details</h3>
+                                    <p>Explore hostel facilities and allocation process</p>
+                                    <div class="card-action">Ask now →</div>
+                                </div>
+                                <div class="feature-card" onclick="askPredefinedQuestion('What are the important deadlines and scholarship information?')" data-question="academic">
+                                    <span class="feature-icon">📚</span>
+                                    <h3>Academic Support</h3>
+                                    <p>Access timetables, LMS, and academic resources</p>
+                                    <div class="card-action">Ask now →</div>
+                                </div>
+                            </div>
+
+                            <div class="quick-start">
+                                <p>Try asking:</p>
+                                <div class="quick-questions">
+                                    <button class="quick-btn" onclick="askQuestion('What documents do I need for admission?')">
+                                        What documents do I need?
+                                    </button>
+                                    <button class="quick-btn" onclick="askQuestion('Tell me about the fee structure')">
+                                        Fee structure
+                                    </button>
+                                    <button class="quick-btn" onclick="askQuestion('How do I apply for hostel?')">
+                                        Hostel application
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="chat-input-container">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="messageInput" 
+                            placeholder="Ask me anything about admission, fees, hostel, academics..."
+                            rows="1"
+                            onkeydown="handleKeyPress(event)"
+                        ></textarea>
+                        <button class="send-button" onclick="sendMessage()" id="sendButton">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="input-footer">
+                        <span class="input-hint">Press Enter to send, Shift+Enter for new line</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Announcements Panel -->
+            <aside class="announcements-panel">
+                <div class="panel-header">
+                    <h3>📢 Latest Updates</h3>
+                </div>
+                <div class="panel-content" id="announcementsContent">
+                    <div class="announcement-card" onclick="askPredefinedQuestion('Tell me about MAHADBT scholarship deadline')">
+                        <div class="announcement-date">March 15, 2025</div>
+                        <h4>MAHADBT Scholarship Deadline</h4>
+                        <p>Last date to apply: March 31, 2025. Submit documents on portal before deadline.</p>
+                        <span class="announcement-badge">Urgent</span>
+                    </div>
+                    <div class="announcement-card" onclick="askPredefinedQuestion('When do classes start?')">
+                        <div class="announcement-date">July 1, 2024</div>
+                        <h4>Semester Start Notice</h4>
+                        <p>Classes begin July 25. Orientation on July 22-24.</p>
+                    </div>
+                    <div class="announcement-card" onclick="askPredefinedQuestion('What is the document submission deadline?')">
+                        <div class="announcement-date">June 28, 2024</div>
+                        <h4>Document Submission</h4>
+                        <p>Last date: July 20. Submit at Admission Office.</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Knowledge Base View (Admin Only) -->
+        <div class="view-container" id="knowledgeView" style="display: none;">
+            <div class="knowledge-base-view">
+                <div class="kb-container">
+                    <div class="kb-header">
+                        <h2>📚 Knowledge Base Management</h2>
+                        <p>Upload and manage college documents for the AI assistant</p>
+                    </div>
+
+                    <div class="kb-upload-section">
+                        <div class="upload-card">
+                            <div class="upload-icon">📤</div>
+                            <h3>Upload Documents</h3>
+                            <p>Supported formats: PDF, DOCX, TXT, Markdown</p>
+                            
+                            <div class="upload-form">
+                                <div class="form-group">
+                                    <label for="categorySelect">Document Category</label>
+                                    <select id="categorySelect" class="form-control">
+                                        <option value="policies">Policies</option>
+                                        <option value="notices">Notices</option>
+                                        <option value="holidays">Holidays & Events</option>
+                                        <option value="timetable">Timetable & Schedule</option>
+                                        <option value="fees">Fee Information</option>
+                                        <option value="hostel">Hostel Information</option>
+                                        <option value="academic-calendar">Academic Calendar</option>
+                                        <option value="faq">FAQ</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="fileInput">Select File</label>
+                                    <input type="file" id="fileInput" class="file-input" accept=".pdf,.docx,.txt,.md" multiple>
+                                    <div class="file-input-label" onclick="document.getElementById('fileInput').click()">
+                                        <span class="upload-icon-small">📁</span>
+                                        <span>Choose files or drag here</span>
+                                    </div>
+                                    <div id="selectedFiles" class="selected-files"></div>
+                                </div>
+
+                                <button class="upload-button" onclick="uploadDocuments()">
+                                    <span>Upload & Process</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="kb-stats">
+                            <h3>📊 Knowledge Base Statistics</h3>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value" id="totalDocs">0</div>
+                                    <div class="stat-label">Total Documents</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="totalChunks">0</div>
+                                    <div class="stat-label">Document Chunks</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="lastUpdated">Never</div>
+                                    <div class="stat-label">Last Updated</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kb-documents-section">
+                        <h3>📄 Existing Documents</h3>
+                        <div class="documents-grid" id="documentsGrid">
+                            <div class="doc-card">
+                                <div class="doc-icon">📄</div>
+                                <div class="doc-info">
+                                    <h4>admission-policy.md</h4>
+                                    <p>Category: Policies</p>
+                                </div>
+                            </div>
+                            <div class="doc-card">
+                                <div class="doc-icon">📄</div>
+                                <div class="doc-info">
+                                    <h4>semester-start-2024.md</h4>
+                                    <p>Category: Notices</p>
+                                </div>
+                            </div>
+                            <div class="doc-card">
+                                <div class="doc-icon">📄</div>
+                                <div class="doc-info">
+                                    <h4>mahadbt-scholarship-2025.md</h4>
+                                    <p>Category: Notices</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="components/chat.js"></script>
+</body>
+</html>

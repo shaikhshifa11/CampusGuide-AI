@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enable Admin Mode - CampusGuide AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-admin {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-admin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-student {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-student:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-open {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-open:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .status.admin {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .status.student {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .instructions {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .instructions h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        .code {
+            background: #1f2937;
+            color: #10b981;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔑 Admin Mode Control</h1>
+        <p>Enable or disable admin access for CampusGuide AI Knowledge Base management.</p>
+        
+        <div class="button-group">
+            <button class="btn-admin" onclick="enableAdmin()">
+                👨‍💼 Enable Admin Mode
+            </button>
+            <button class="btn-student" onclick="disableAdmin()">
+                👤 Switch to Student Mode
+            </button>
+            <button class="btn-open" onclick="openApp()">
+                🚀 Open CampusGuide AI
+            </button>
+        </div>
+        
+        <div id="status" class="status" style="display: none;"></div>
+        
+        <div class="instructions">
+            <h3>📋 Instructions</h3>
+            <ol>
+                <li>Click "Enable Admin Mode" to access Knowledge Base</li>
+                <li>Click "Open CampusGuide AI" to launch the app</li>
+                <li>In the sidebar, click "📚 Knowledge Base"</li>
+                <li>Upload documents and manage knowledge base</li>
+            </ol>
+            
+            <h3 style="margin-top: 20px;">💻 Manual Method</h3>
+            <p style="margin-bottom: 10px;">Open browser console (F12) and run:</p>
+            <div class="code">
+                localStorage.setItem('userRole', 'admin');<br>
+                location.reload();
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function updateStatus() {
+            const role = localStorage.getItem('userRole') || 'student';
+            const statusDiv = document.getElementById('status');
+            statusDiv.style.display = 'block';
+            
+            if (role === 'admin') {
+                statusDiv.className = 'status admin';
+                statusDiv.textContent = '✅ Admin Mode Enabled';
+            } else {
+                statusDiv.className = 'status student';
+                statusDiv.textContent = '👤 Student Mode Active';
+            }
+        }
+        
+        function enableAdmin() {
+            localStorage.setItem('userRole', 'admin');
+            updateStatus();
+            alert('✅ Admin mode enabled!\n\nYou can now access the Knowledge Base.\n\nClick "Open CampusGuide AI" to start.');
+        }
+        
+        function disableAdmin() {
+            localStorage.setItem('userRole', 'student');
+            updateStatus();
+            alert('👤 Switched to student mode.\n\nKnowledge Base access is now restricted.');
+        }
+        
+        function openApp() {
+            window.open('client/index.html', '_blank');
+        }
+        
+        // Check status on load
+        updateStatus();
+    </script>
+</body>
+</html>
