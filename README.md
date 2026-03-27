@@ -73,7 +73,7 @@ Open:
 
 client/index.html
 
-🧪 Demo (For Judges)
+🧪 Demo
 
 Ask: "What is scholarship deadline?" → AI unsure
 
